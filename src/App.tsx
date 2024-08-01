@@ -1,14 +1,13 @@
-import TableView from "./Component/TableView"
 
+import TableView from "./Component/TableView";
 
 function App() {
-
+ 
   return (
-    <>
-      <h1>Student Data</h1>
+    <div>
       <TableView />
-    </>
-  )
+    </div>
+  );
 }
 
 export default App;

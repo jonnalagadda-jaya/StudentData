@@ -1,47 +1,3 @@
-// import { Students } from "./types";
-
-// export async function getStudents(): Promise<Students[]> {
-//   try {
-//    const response = await fetch(`https://studentmgmtapi.vercel.app/api/allStudents`);
-//     const data = await response.json()
-//     console.log("data", data)
-//     return data.Students || [];
-//   }
-//     catch(error){
-//         console.log("There was an error fetching the Data", error);
-//     }
-// }
-
-// export async function deleteStudents(emailId: string) {
-//   try {
-//     const response = await fetch(`https://studentmgmtapi.vercel.app/api/deleteStudent`, {
-//       method: "POST",
-//       body: JSON.stringify({ emailId }),
-//     })
-//     const data = await response.json()
-//     console.log(data)
-//     }
-//       catch(error){
-//         console.log("There was an error fetching the Data", error);
-//       }
-// }
-
-// export async function createStudents(student:Students) {
-//   try {
-//    const response = await fetch(`https://studentmgmtapi.vercel.app/api/createStudent`, {
-//       method: "POST",
-//       body: JSON.stringify(student),
-//     })
-//     const data = await response.json()
-//     console.log("data", data)
-//   }
-//     catch(error){
-//       console.log("There was an error fetching the Data", error);
-      
-//     }
-// }
-
-
 import { Students } from "./types";
 
 const API = "https://studentmgmtapi.vercel.app/api/allStudents";
@@ -96,3 +52,23 @@ export async function createStudents(student: Students): Promise<void> {
   }
 }
 
+export async function editStudent(student: Students): Promise<void> {
+  try {
+    const response = await fetch(
+      `https://studentmgmtapi.vercel.app/api/editStudent`,
+      {
+        method: "POST",
+        body: JSON.stringify(student), 
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log("data", data);
+  } catch (error) {
+    console.error("There was an error updating the student", error);
+  }
+}

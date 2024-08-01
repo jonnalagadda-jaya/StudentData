@@ -5,67 +5,44 @@ import { Button } from "../components/ui/button";
 
 type FormProps = {
   saveStudent: (student: Students) => void;
+  cancelStudent: () => void;
+  initialData?: Students; // Add initialData prop
 };
-function Form({ saveStudent }: FormProps) {
+
+function Form({ saveStudent, cancelStudent, initialData }: FormProps) {
   const form = useForm<Students>({
-    defaultValues: {
+    defaultValues: initialData || {
       id: "",
       firstName: "",
       mobileNumber: "",
       emailId: "",
     },
-    onSubmit:handleSubmit
-  })
-    function handleSubmit(vals) {
-        saveStudent(vals.value)
-        console.log(vals?.value)
-    }
-return (
-  <div>
-    <h1>Simple Form Example</h1>
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        form.handleSubmit();
-      }}
-    >
-      <div>
-        <form.Field
-          name="id"
-          children={(field) => (
-            <>
-              <label htmlFor={field.name}>ID:</label>
-              <input
-                className="border-2 border-indigo-600"
-                id={field.name}
-                name={field.name}
-                value={field.state.value}
-                onBlur={field.handleBlur}
-                onChange={(e) => field.handleChange(e.target.value)}
-              />
-              <FieldInfo field={field} />
-            </>
-          )}
-        />
-      </div>
-      <div>
-        <form.Field
-          name="firstName"
-          validators={{
-            onChange: ({ value }) =>
-              !value
-                ? "A first name is required"
-                : value.length < 3
-                ? "First name must be at least 3 characters"
-                : undefined,
+    onSubmit: handleSubmit,
+  });
+
+  function handleSubmit(vals) {
+    saveStudent(vals.value);
+    console.log(vals?.value);
+  }
+
+  return (
+    <div className="grid justify-items-center">
+      <div className="border-2 border-gray-600 rounded w-5/12 grid grid-cols-2 grid-rows-4 gap-4 p-4">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            form.handleSubmit();
           }}
-          children={(field) => {
-            return (
+          className="contents"
+        >
+          <form.Field
+            name="id"
+            children={(field) => (
               <>
-                <label htmlFor={field.name}>First Name:</label>
+                <label htmlFor={field.name}>ID:</label>
                 <input
-                  className="border-2 border-indigo-600"
+                  className="border-2 border-gray-600 rounded"
                   id={field.name}
                   name={field.name}
                   value={field.state.value}
@@ -74,62 +51,74 @@ return (
                 />
                 <FieldInfo field={field} />
               </>
-            );
-          }}
-        />
+            )}
+          />
+          <form.Field
+            name="firstName"
+            validators={{
+              onChange: ({ value }) =>
+                !value ? "First Name is Required" : undefined,
+            }}
+            children={(field) => (
+              <>
+                <label htmlFor={field.name}>First Name:</label>
+                <input
+                  className="border-2 border-gray-600 rounded"
+                  id={field.name}
+                  name={field.name}
+                  value={field.state.value}
+                  onBlur={field.handleBlur}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                />
+                <FieldInfo field={field} />
+              </>
+            )}
+          />
+          <form.Field
+            name="mobileNumber"
+            children={(field) => (
+              <>
+                <label htmlFor={field.name}>Mobile Number:</label>
+                <input
+                  className="border-2 border-gray-600 rounded"
+                  id={field.name}
+                  name={field.name}
+                  value={field.state.value}
+                  onBlur={field.handleBlur}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                />
+                <FieldInfo field={field} />
+              </>
+            )}
+          />
+          <form.Field
+            name="emailId"
+            children={(field) => (
+              <>
+                <label htmlFor={field.name}>Email Id:</label>
+                <input
+                  className="border-2 border-gray-600 rounded"
+                  id={field.name}
+                  name={field.name}
+                  value={field.state.value}
+                  onBlur={field.handleBlur}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                  disabled={!!initialData}
+                />
+                <FieldInfo field={field} />
+              </>
+            )}
+          />
+          <div className="col-span-2 flex justify-center mt-4 gap-4">
+            <Button type="submit">Save</Button>
+            <Button type="button" onClick={cancelStudent}>
+              Cancel
+            </Button>
+          </div>
+        </form>
       </div>
-      <div>
-        <form.Field
-          name="mobileNumber"
-          children={(field) => (
-            <>
-              <label htmlFor={field.name}>Mobile Number:</label>
-              <input
-                className="border-2 border-indigo-600"
-                id={field.name}
-                name={field.name}
-                value={field.state.value}
-                onBlur={field.handleBlur}
-                onChange={(e) => field.handleChange(e.target.value)}
-              />
-              <FieldInfo field={field} />
-            </>
-          )}
-        />
-      </div>
-      <div>
-        <form.Field
-          name="emailId"
-          children={(field) => (
-            <>
-              <label htmlFor={field.name}>Email :</label>
-              <input
-                className="border-2 border-indigo-600"
-                id={field.name}
-                name={field.name}
-                value={field.state.value}
-                onBlur={field.handleBlur}
-                onChange={(e) => field.handleChange(e.target.value)}
-              />
-              <FieldInfo field={field} />
-            </>
-          )}
-        />
-      </div>
-      <form.Subscribe
-        selector={(state) => [state.canSubmit, state.isSubmitting]}
-        children={([canSubmit, isSubmitting]) => (
-          <Button type="submit" disabled={!canSubmit}>
-            {isSubmitting ? "..." : "Submit"}
-          </Button>
-        )}
-      />
-    </form>
-  </div>
-);
-
-
-
+    </div>
+  );
 }
 
 export default Form;

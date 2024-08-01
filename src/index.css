@@ -67,3 +67,31 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* src/styles.css */
+.panel-light {
+  background-color: white;
+  color: black;
+}
+
+.panel-dark {
+  background-color: black;
+  color: white;
+}
+
+button {
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+button-light {
+  background-color: lightgray;
+  color: black;
+}
+
+button-dark {
+  background-color: darkgray;
+  color: white;
+}
+
